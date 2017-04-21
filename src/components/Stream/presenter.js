@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Stream({ tracks = [] }) {
+function Stream({ tracks = [] }) {
   return (
     <div>
       {tracks.map((track, key) => {
@@ -13,3 +13,5 @@ export default function Stream({ tracks = [] }) {
     </div>
   );
 }
+
+export default Stream;

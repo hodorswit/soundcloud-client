@@ -1,12 +1,12 @@
 import React from "react";
-import Stream from "./Stream";
+import Stream from "./presenter";
 import renderer from "react-test-renderer";
 import { shallow, mount } from "enzyme";
 
 describe("Stream", function() {
   const tracks = [{ title: "Track 1" }, { title: "Track 2" }];
 
-  it("renders deterministically", () => {
+  it("snapshot", () => {
     const component = renderer.create(<Stream tracks={tracks} />);
     let tree = component.toJSON();
     expect(tree).toMatchSnapshot();

@@ -1,4 +1,4 @@
-exports[`Stream renders deterministically 1`] = `
+exports[`Stream snapshot 1`] = `
 <div>
   <div
     className="track">
