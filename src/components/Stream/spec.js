@@ -4,7 +4,10 @@ import renderer from "react-test-renderer";
 import { shallow, mount } from "enzyme";
 
 describe("Stream", function() {
-  const tracks = [{ title: "Track 1" }, { title: "Track 2" }];
+  const tracks = [
+    { origin: { title: "Track 1" } },
+    { origin: { title: "Track 2" } }
+  ];
 
   it("snapshot", () => {
     const component = renderer.create(<Stream tracks={tracks} />);
