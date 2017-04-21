@@ -40,11 +40,14 @@ class Stream extends Component {
           })}
         </div>
         {activeTrack
-          ? <audio
-              id="audio"
-              ref="audio"
-              src={`${activeTrack.origin.stream_url}?client_id=${CLIENT_ID}`}
-            />
+          ? <div>
+              <div>Playing: {activeTrack.origin.title} </div>
+              <audio
+                id="audio"
+                ref="audio"
+                src={`${activeTrack.origin.stream_url}?client_id=${CLIENT_ID}`}
+              />
+            </div>
           : null}
       </div>
     );
