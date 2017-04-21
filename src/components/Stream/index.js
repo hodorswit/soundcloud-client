@@ -6,19 +6,21 @@ import Stream from "./presenter";
 
 function mapStateToProps(state) {
   const { user } = state.auth;
-  const { tracks, activeTrack } = state.track;
+  const { trackIds, trackEntities, activeTrackId } = state.track;
 
   return {
     user,
-    tracks,
-    activeTrack
+    trackIds,
+    trackEntities,
+    activeTrackId
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     onAuth: bindActionCreators(authActionCreators.doAuth, dispatch),
-    onPlay: bindActionCreators(trackActionCreators.doPlayTrack, dispatch)
+    onPlay: bindActionCreators(trackActionCreators.doPlayTrack, dispatch),
+    onLike: bindActionCreators(trackActionCreators.doLikeTrack, dispatch)
   };
 }
 

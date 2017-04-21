@@ -1,5 +1,8 @@
 import SC from "soundcloud";
 import { actionCreators as trackActionCreators } from "./track";
+import trackSchema from "../schemas/track";
+import { map } from "lodash";
+import { schema, normalize } from "normalizr";
 
 // ACTION TYPES
 const ME_SET = "auth/ME_SET";
@@ -38,7 +41,15 @@ function doFetchStream(session) {
     )
       .then(response => response.json())
       .then(data => {
-        dispatch(trackActionCreators.doSetTracks(data.collection));
+        const normalized = normalize(map(data.collection, "origin"), [
+          trackSchema
+        ]);
+        dispatch(
+          trackActionCreators.doSetTracks(
+            normalized.entities.tracks,
+            normalized.result
+          )
+        );
       });
   };
 }

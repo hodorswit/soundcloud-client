@@ -2,15 +2,25 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { CLIENT_ID } from "../../constants/auth";
 
+function LikeButton({ track, onLike }) {
+  return (
+    <span>
+      {track.user_favorite
+        ? <button type="button" onClick={() => onLike(track.id)}>Unlike</button>
+        : <button type="button" onClick={() => onLike(track.id)}>Like</button>}
+    </span>
+  );
+}
+
 class Stream extends Component {
   componentDidUpdate() {
     const audioElement = ReactDOM.findDOMNode(this.refs.audio);
 
     if (!audioElement) return;
 
-    const { activeTrack } = this.props;
+    const { activeTrackId } = this.props;
 
-    if (activeTrack) {
+    if (activeTrackId) {
       audioElement.play();
     } else {
       audioElement.pause();
@@ -18,7 +28,17 @@ class Stream extends Component {
   }
 
   render() {
-    const { user, tracks = [], activeTrack, onAuth, onPlay } = this.props;
+    const {
+      user,
+      trackIds = [],
+      trackEntities = {},
+      activeTrackId,
+      onAuth,
+      onPlay,
+      onLike
+    } = this.props;
+
+    console.log(trackIds);
     return (
       <div>
         <div>
@@ -28,24 +48,31 @@ class Stream extends Component {
         </div>
         <br />
         <div>
-          {tracks.map((track, key) => {
+          {trackIds.map((id, key) => {
             return (
               <div className="track" key={key}>
-                {track.origin.title}
-                <button type="button" onClick={() => onPlay(track)}>
+                {trackEntities[id].title}
+                <button type="button" onClick={() => onPlay(id)}>
                   Play
                 </button>
+                <LikeButton track={trackEntities[id]} onLike={onLike} />
               </div>
             );
           })}
         </div>
-        {activeTrack
+        {activeTrackId
           ? <div>
-              <div>Playing: {activeTrack.origin.title} </div>
+              <div>
+                Playing: {trackEntities[activeTrackId].title}
+                <LikeButton
+                  track={trackEntities[activeTrackId]}
+                  onLike={onLike}
+                />
+              </div>
               <audio
                 id="audio"
                 ref="audio"
-                src={`${activeTrack.origin.stream_url}?client_id=${CLIENT_ID}`}
+                src={`${trackEntities[activeTrackId].stream_url}?client_id=${CLIENT_ID}`}
               />
             </div>
           : null}
