@@ -1,0 +1,12 @@
+exports[`Stream renders deterministically 1`] = `
+<div>
+  <div
+    className="track">
+    Track 1
+  </div>
+  <div
+    className="track">
+    Track 2
+  </div>
+</div>
+`;
