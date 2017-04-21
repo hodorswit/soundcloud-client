@@ -16,7 +16,7 @@ describe("Stream", function() {
   });
 
   it("renders two tracks", () => {
-    const component = shallow(<Stream tracks={props} />);
+    const component = shallow(<Stream {...props} />);
     expect(component.find(".track")).toHaveLength(2);
   });
 });

@@ -8,25 +8,6 @@ exports[`Stream snapshot 1`] = `
     </button>
   </div>
   <br />
-  <div>
-    <div
-      className="track">
-      Track 1
-      <button
-        onClick={[Function]}
-        type="button">
-        Play
-      </button>
-    </div>
-    <div
-      className="track">
-      Track 2
-      <button
-        onClick={[Function]}
-        type="button">
-        Play
-      </button>
-    </div>
-  </div>
+  <div />
 </div>
 `;
