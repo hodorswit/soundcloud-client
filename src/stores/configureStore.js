@@ -3,7 +3,7 @@ import { createLogger } from "redux-logger";
 import thunk from "redux-thunk";
 import { browserHistory } from "react-router";
 import { routerMiddleware } from "react-router-redux";
-import rootReducer from "../reducers/index";
+import rootReducer from "../ducks/index";
 
 const logger = createLogger();
 const router = routerMiddleware(browserHistory);
