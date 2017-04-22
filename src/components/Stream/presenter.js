@@ -1,18 +1,29 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { CLIENT_ID } from "../../constants/auth";
+import { observer } from "mobx-react";
 
-function LikeButton({ track, onLike }) {
-  return (
-    <span>
-      {track.user_favorite
-        ? <button type="button" onClick={() => onLike(track.id)}>Unlike</button>
-        : <button type="button" onClick={() => onLike(track.id)}>Like</button>}
-    </span>
-  );
+class LikeButton extends Component {
+  render() {
+    const { track } = this.props;
+    return (
+      <span>
+        {track.user_favorite
+          ? <button type="button" onClick={() => this.likeTrack(track)}>
+              Unlike
+            </button>
+          : <button type="button" onClick={() => this.likeTrack(track)}>
+              Like
+            </button>}
+      </span>
+    );
+  }
+
+  likeTrack = track => {
+    this.props.onLike(track);
+  };
 }
 
-class Stream extends Component {
+@observer class Stream extends Component {
   componentDidUpdate() {
     const audioElement = ReactDOM.findDOMNode(this.refs.audio);
 
@@ -29,50 +40,46 @@ class Stream extends Component {
 
   render() {
     const {
-      user,
-      trackIds = [],
-      trackEntities = {},
-      activeTrackId,
+      me,
+      tracks,
+      activeTrack,
+      clientId,
       onAuth,
       onPlay,
       onLike
     } = this.props;
 
-    console.log(trackIds);
     return (
       <div>
         <div>
-          {user
-            ? <div>{user.username}</div>
+          {me
+            ? <div>{me.username}</div>
             : <button onClick={onAuth} type="button">Login</button>}
         </div>
         <br />
         <div>
-          {trackIds.map((id, key) => {
+          {tracks.map((track, key) => {
             return (
               <div className="track" key={key}>
-                {trackEntities[id].title}
-                <button type="button" onClick={() => onPlay(id)}>
+                {track.title}
+                <button type="button" onClick={() => onPlay(track)}>
                   Play
                 </button>
-                <LikeButton track={trackEntities[id]} onLike={onLike} />
+                <LikeButton track={track} onLike={onLike} />
               </div>
             );
           })}
         </div>
-        {activeTrackId
+        {activeTrack
           ? <div>
               <div>
-                Playing: {trackEntities[activeTrackId].title}
-                <LikeButton
-                  track={trackEntities[activeTrackId]}
-                  onLike={onLike}
-                />
+                Playing: {activeTrack.title}
+                <LikeButton track={activeTrack} onLike={onLike} />
               </div>
               <audio
                 id="audio"
                 ref="audio"
-                src={`${trackEntities[activeTrackId].stream_url}?client_id=${CLIENT_ID}`}
+                src={`${activeTrack.stream_url}?client_id=${clientId}`}
               />
             </div>
           : null}

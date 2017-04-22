@@ -1,27 +1,23 @@
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { actionCreators as authActionCreators } from "../../ducks/auth";
-import { actionCreators as trackActionCreators } from "../../ducks/track";
+import React from "react";
+import { observer } from "mobx-react";
 import Stream from "./presenter";
+import { CLIENT_ID } from "../../constants/auth";
+import { auth } from "../../actions/auth";
+import userStore from "../../stores/userStore";
+import trackStore from "../../stores/trackStore";
 
-function mapStateToProps(state) {
-  const { user } = state.auth;
-  const { trackIds, trackEntities, activeTrackId } = state.track;
+const StreamContainer = observer(() => {
+  return (
+    <Stream
+      me={userStore.me}
+      tracks={trackStore.tracks}
+      activeTrack={trackStore.activeTrack}
+      clientId={CLIENT_ID}
+      onAuth={auth}
+      onPlay={track => trackStore.playTrack(track.id)}
+      onLike={track => trackStore.likeTrack(track)}
+    />
+  );
+});
 
-  return {
-    user,
-    trackIds,
-    trackEntities,
-    activeTrackId
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    onAuth: bindActionCreators(authActionCreators.doAuth, dispatch),
-    onPlay: bindActionCreators(trackActionCreators.doPlayTrack, dispatch),
-    onLike: bindActionCreators(trackActionCreators.doLikeTrack, dispatch)
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Stream);
+export default StreamContainer;
